@@ -2,7 +2,7 @@
 #include<stdio.h>
 #include<math.h>
 #include<Gl/glut.h>
-static GLfloat spin=360.0;/*fan rotation variable*/
+static GLfloat spin=360.0;
 static GLfloat u=0.45;
 static GLfloat v=0.45;
 static GLfloat w=0.45;
@@ -10,7 +10,7 @@ static GLfloat b=0.45;
 static GLfloat c=0.00;
 static GLfloat d=0.00;
 static GLfloat e=0.00;
-static GLfloat a=-40; /*clouds translation variable*/
+static GLfloat a=-40;
 static int z=0;
 GLfloat x=0;
 GLfloat y=0;
@@ -21,6 +21,7 @@ void init(void)
 glClearColor(1.0,1.0,1.0,1.0);
 glShadeModel(GL_FLAT);
 }
+
 void background()
 {
 glColor3f(0.0,0.1,0.0);
@@ -93,29 +94,28 @@ glEnd();
 glPopMatrix();
 }
 
-void powerstation()
+void powerhouse()
 {
-GLint ax=1.5,ay=8;
 glColor3f(1.0,0.25,0.1);
 glBegin(GL_POLYGON);
-glVertex2i(ax,ay);
-glVertex2i(ax-2,ay-2);
-glVertex2i(ax-2,ay-8);
-glVertex2i(ax+2,ay-8);
-glVertex2i(ax+2,ay-2);
+glVertex2i(1.5,8);
+glVertex2i(-0.5,6);
+glVertex2i(-0.5,0);
+glVertex2i(3.5,0);
+glVertex2i(3.5,6);
 glEnd();
 glColor3f(0.7,0.5,0.3);
 glBegin(GL_POLYGON);
-glVertex2i(ax,ay+3);
-glVertex2i(ax-3,ay-3);
-glVertex2i(ax+3,ay-3);
+glVertex2i(1.5,11);
+glVertex2i(-1.5,5);
+glVertex2i(4.5,5);
 glEnd();
 glColor3f(v,v,w);
 glBegin(GL_POLYGON);
-glVertex2i(ax-1,ay-5.0);
-glVertex2i(ax-1.0,ay-8.0);
-glVertex2i(ax+1.0,ay-8.0);
-glVertex2i(ax+1.0,ay-5.0);
+glVertex2i(0.5,3);
+glVertex2i(0.5,0);
+glVertex2i(2.5,0);
+glVertex2i(2.5,3);
 glEnd();
 }
 void clouds()
@@ -236,38 +236,8 @@ glVertex2f(-32.5,0.0);
 glVertex2f(-31.5,0.0);
 glEnd();
 }
-/*void drawDisk(double radius) {
 
-	int d;
-
-	glBegin(GL_POLYGON);
-	
-	for (d = 10; d < 42; d++) {
-
-		double angle = 2*PI/32 * d;
-
-		glVertex2d( radius*cos(angle), radius*sin(angle));
-
-	}
-
-	glEnd();
-	glFlush();
-
-}
-
-
-void drawSun() {
-
-	int i;
-
-	glColor3f(1,1,0);
-	drawDisk(5);
-
-	glColor3f(0,0,0);
-
-}*/
-
-void display(void)
+void display()
 {
 int b=0;
 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -276,7 +246,7 @@ hut(-29,-23,-24,-33);
 hut(0,-11,5,-21);
 hut(-21,-1,-14,-11);
 clouds();
-powerstation();
+powerhouse();
 fanpole1();
 fanpole2();
 fanpole3();
@@ -290,10 +260,10 @@ glFlush();
 void spinclockwise(void)
 {
 w=0.3;u=0;v=1;b=0.5;c=1;d=1;e=0;
-a=a+0.1;
+a=a+0.04;
 if(a>40)
 a-=100.0;
-spin=spin-1.0;
+spin=spin-2.0;
 if(spin<0)
 spin=spin+360.0;
 glutPostRedisplay();
@@ -313,7 +283,9 @@ switch(id)
 {
 case 1: glutIdleFunc(spinclockwise);
 break;
-case 2: exit(0);
+case 2:glutIdleFunc(display);
+break;
+case 3: exit(0);
 }
 }
 int main(int argc,char **argv)
@@ -328,7 +300,8 @@ glutDisplayFunc(display);
 glutReshapeFunc(reshape);
 glutCreateMenu(menu);
 glutAddMenuEntry("..............ROTATE WINDMILL.............",1);
-glutAddMenuEntry("............QUIT.........................",2);
+glutAddMenuEntry(".................STOP......................",2);
+glutAddMenuEntry("............QUIT.........................",3);
 glutAttachMenu(GLUT_RIGHT_BUTTON);
 glutMainLoop();
 return 0;
